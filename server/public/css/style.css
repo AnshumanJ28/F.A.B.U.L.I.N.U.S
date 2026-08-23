@@ -342,6 +342,23 @@ html, body {
   font-size: 13px;
 }
 
+.item-toggle {
+  background: none;
+  border: none;
+  color: var(--amber-hi);
+  cursor: pointer;
+  font-size: 12px;
+  width: 100%;
+  text-align: center;
+  padding: 6px 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+  opacity: 0.8;
+}
+.item-toggle:hover {
+  color: var(--text);
+  opacity: 1;
+}
+
 .search-results {
   list-style: none;
   margin: 0;

@@ -1,0 +1,15 @@
+{
+  "category_units": {
+    "Dairy": ["l", "ml", "kg", "g", "packet", ""],
+    "Produce": ["kg", "g", "lb", "oz", "bunch", ""],
+    "Meat & Seafood": ["kg", "g", "lb", "oz", ""],
+    "Pantry": ["kg", "g", "lb", "oz", "packet", "box", "can", "bottle", "jar", ""],
+    "Beverages": ["l", "ml", "bottle", "can", "pack", "carton", ""],
+    "Household": ["pack", "roll", "box", ""],
+    "Personal Care": ["bottle", "pack", "tube", ""],
+    "Bakery": ["pack", "loaf", ""]
+  },
+  "item_units": {
+    "eggs": ["dozen", ""]
+  }
+}
