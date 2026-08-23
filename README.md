@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🎙️ F.A.B.U.L.I.N.U.S.</h1>
+  <h1>F.A.B.U.L.I.N.U.S.</h1>
   <p><strong>Fast Assistant, Built Using Logistic Inference — Native Understanding & Speech</strong></p>
 
   [![C++](https://img.shields.io/badge/C++-17-blue.svg?style=for-the-badge&logo=c%2B%2B)](https://isocpp.org/)
@@ -9,7 +9,7 @@
 
 ---
 
-## ⚡ Overview
+## Overview
 
 **F.A.B.U.L.I.N.U.S.** is a blazingly fast, voice-activated shopping list manager with an intelligent suggestion engine. It utilizes a **custom-trained Natural Language Processing (NLP) model** running entirely inside a native C++ backend via ONNX Runtime. 
 
@@ -19,17 +19,17 @@ Simply speak commands like *"add 500 grams of potatoes"* or *"remove two eggs"*,
 
 ---
 
-## ✨ Features
+## Features
 
-- **🎙️ Voice-First "Jarvis HUD" UI**: A beautiful, dark-themed interface featuring a glowing, animated amber orb that responds to your voice in real-time.
-- **🧠 Native C++ ONNX Inference**: Intent classification happens natively in C++ using a TF-IDF + Logistic Regression model. The entire NLP pipeline lives directly inside the ONNX graph.
-- **🧮 Smart Metric Math**: Seamlessly handles complex metric math. Add `1 kg` of onions, remove `200 grams`, and it perfectly calculates you have `0.8 kg` left. Understands English word numbers (`one`, `two`, `a dozen`).
-- **💡 Contextual Suggestions Engine**: Recommends items dynamically based on your purchase frequency, recent behavior, time of year (seasonality), and known item substitutes.
-- **☁️ Cloud Run Ready**: Ships with a Dockerfile ready to be dropped straight into Google Cloud Run or any containerized environment.
+- **Voice-First "Jarvis HUD" UI**: A beautiful, dark-themed interface featuring a glowing, animated amber orb that responds to your voice in real-time.
+- **Native C++ ONNX Inference**: Intent classification happens natively in C++ using a TF-IDF + Logistic Regression model. The entire NLP pipeline lives directly inside the ONNX graph.
+- **Smart Metric Math**: Seamlessly handles complex metric math. Add `1 kg` of onions, remove `200 grams`, and it perfectly calculates you have `0.8 kg` left. Understands English word numbers (`one`, `two`, `a dozen`).
+- **Contextual Suggestions Engine**: Recommends items dynamically based on your purchase frequency, recent behavior, time of year (seasonality), and known item substitutes.
+- **Cloud Run Ready**: Ships with a Dockerfile ready to be dropped straight into Google Cloud Run or any containerized environment.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 graph TD
@@ -55,7 +55,7 @@ The server logic lives entirely in [`server/main.cpp`](server/main.cpp) and reli
 
 ---
 
-## 📂 Repository Layout
+## Repository Layout
 
 ```text
 ├── index.html, css/, js/   # The frontend source code
@@ -75,7 +75,7 @@ The server logic lives entirely in [`server/main.cpp`](server/main.cpp) and reli
 
 ---
 
-## 🚀 Running Locally
+## Running Locally
 
 You only need `g++` (C++17) and `make`. There are no external dependencies required—ONNX Runtime, cpp-httplib, and nlohmann/json are perfectly vendored right inside the `server/third_party/` directory!
 
@@ -90,7 +90,7 @@ Then just open `http://localhost:8080` in Chrome!
 
 ---
 
-## 🌐 API Endpoints
+## API Endpoints
 
 - `POST /parse {text}` → `{intent, item?, quantity?, brand?, size?, category?, price_range?}`
 - `POST /log {type, item, quantity}` → records a history event (used by `/suggest`)
