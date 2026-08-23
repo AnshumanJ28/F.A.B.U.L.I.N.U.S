@@ -1,0 +1,17 @@
+# C++ Build Output
+server/vsa-server
+server/vsa-server.exe
+*.o
+*.obj
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary scripts
+strip.py
+
+# OS generated files
+.DS_Store
+Thumbs.db

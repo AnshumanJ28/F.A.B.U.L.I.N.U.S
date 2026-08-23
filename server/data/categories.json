@@ -1,0 +1,17 @@
+{
+  "milk": "Dairy", "cheese": "Dairy", "yogurt": "Dairy", "butter": "Dairy",
+  "paneer": "Dairy", "dahi": "Dairy",
+  "bread": "Bakery", "roti": "Bakery", "flour": "Bakery", "atta": "Bakery",
+  "eggs": "Dairy", "ande": "Dairy",
+  "bananas": "Produce", "apples": "Produce", "onions": "Produce",
+  "tomatoes": "Produce", "spinach": "Produce", "potatoes": "Produce",
+  "kele": "Produce", "seb": "Produce", "pyaz": "Produce", "tamatar": "Produce",
+  "palak": "Produce", "aloo": "Produce",
+  "rice": "Pantry", "chawal": "Pantry", "sugar": "Pantry", "cheeni": "Pantry",
+  "pasta": "Pantry", "cereal": "Pantry", "olive oil": "Pantry",
+  "chicken": "Meat & Seafood",
+  "coffee": "Beverages", "orange juice": "Beverages", "water": "Beverages",
+  "santre ka juice": "Beverages", "pani": "Beverages",
+  "toothpaste": "Personal Care", "shampoo": "Personal Care",
+  "detergent": "Household"
+}

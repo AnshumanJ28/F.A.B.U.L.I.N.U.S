@@ -1,0 +1,20 @@
+[
+  {"item": "milk", "days_ago": 2},
+  {"item": "milk", "days_ago": 9},
+  {"item": "milk", "days_ago": 16},
+  {"item": "bread", "days_ago": 3},
+  {"item": "bread", "days_ago": 10},
+  {"item": "eggs", "days_ago": 4},
+  {"item": "eggs", "days_ago": 11},
+  {"item": "eggs", "days_ago": 18},
+  {"item": "bananas", "days_ago": 1},
+  {"item": "bananas", "days_ago": 8},
+  {"item": "coffee", "days_ago": 5},
+  {"item": "coffee", "days_ago": 12},
+  {"item": "coffee", "days_ago": 19},
+  {"item": "coffee", "days_ago": 26},
+  {"item": "rice", "days_ago": 20},
+  {"item": "toothpaste", "days_ago": 30},
+  {"item": "chicken", "days_ago": 6},
+  {"item": "chicken", "days_ago": 13}
+]

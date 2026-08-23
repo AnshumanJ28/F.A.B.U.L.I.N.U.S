@@ -1,0 +1,10 @@
+{
+  "milk": ["almond milk", "oat milk", "soy milk"],
+  "sugar": ["honey", "stevia", "agave syrup"],
+  "butter": ["margarine", "coconut oil"],
+  "pasta": ["zucchini noodles", "rice noodles"],
+  "bread": ["tortillas", "pita"],
+  "rice": ["quinoa", "cauliflower rice"],
+  "orange juice": ["fresh oranges"],
+  "chicken": ["tofu", "chickpeas"]
+}

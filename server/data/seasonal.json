@@ -1,0 +1,14 @@
+{
+  "1": [{"item": "citrus fruits", "reason": "Winter citrus is in peak season"}],
+  "2": [{"item": "sweet potatoes", "reason": "In season this month"}],
+  "3": [{"item": "asparagus", "reason": "Spring produce is arriving"}],
+  "4": [{"item": "strawberries", "reason": "Early spring berries on sale"}],
+  "5": [{"item": "peas", "reason": "Fresh spring peas in season"}],
+  "6": [{"item": "watermelon", "reason": "Summer fruit is in season"}],
+  "7": [{"item": "corn", "reason": "Peak summer corn season"}],
+  "8": [{"item": "tomatoes", "reason": "Peak tomato season"}],
+  "9": [{"item": "apples", "reason": "Fall apple harvest"}],
+  "10": [{"item": "pumpkin", "reason": "Pumpkin season"}],
+  "11": [{"item": "cranberries", "reason": "Holiday season staple"}],
+  "12": [{"item": "eggnog", "reason": "Holiday season favorite"}]
+}

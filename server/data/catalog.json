@@ -1,0 +1,268 @@
+[
+  {
+    "name": "Organic Whole Milk 1L",
+    "item": "milk",
+    "brand": "organic",
+    "size": "1 liter",
+    "price": 4.5
+  },
+  {
+    "name": "Great Value Milk 1L",
+    "item": "milk",
+    "brand": "great value",
+    "size": "1 liter",
+    "price": 3.2
+  },
+  {
+    "name": "Amul Milk 1L",
+    "item": "milk",
+    "brand": "amul",
+    "size": "1 liter",
+    "price": 1.5
+  },
+  {
+    "name": "Organic Apples (bag)",
+    "item": "apples",
+    "brand": "organic",
+    "size": "large",
+    "price": 5.75
+  },
+  {
+    "name": "Trader Joe's Apples",
+    "item": "apples",
+    "brand": "trader joe's",
+    "size": "small",
+    "price": 3.99
+  },
+  {
+    "name": "Kirkland Toothpaste 3-pack",
+    "item": "toothpaste",
+    "brand": "kirkland",
+    "size": "family size",
+    "price": 8.99
+  },
+  {
+    "name": "Great Value Toothpaste",
+    "item": "toothpaste",
+    "brand": "great value",
+    "size": "small",
+    "price": 2.49
+  },
+  {
+    "name": "365 Organic Toothpaste",
+    "item": "toothpaste",
+    "brand": "365",
+    "size": "small",
+    "price": 4.29
+  },
+  {
+    "name": "Organic Bananas (bunch)",
+    "item": "bananas",
+    "brand": "organic",
+    "size": "large",
+    "price": 2.1
+  },
+  {
+    "name": "Great Value Bananas",
+    "item": "bananas",
+    "brand": "great value",
+    "size": "large",
+    "price": 1.5
+  },
+  {
+    "name": "Kirkland Chicken Breast 12pk",
+    "item": "chicken",
+    "brand": "kirkland",
+    "size": "12 pack",
+    "price": 22.99
+  },
+  {
+    "name": "Organic Chicken Breast",
+    "item": "chicken",
+    "brand": "organic",
+    "size": "family size",
+    "price": 14.5
+  },
+  {
+    "name": "365 Shampoo",
+    "item": "shampoo",
+    "brand": "365",
+    "size": "500g",
+    "price": 6.75
+  },
+  {
+    "name": "Trader Joe's Shampoo",
+    "item": "shampoo",
+    "brand": "trader joe's",
+    "size": "small",
+    "price": 5.5
+  },
+  {
+    "name": "Organic Rice 5lb",
+    "item": "rice",
+    "brand": "organic",
+    "size": "family size",
+    "price": 7.2
+  },
+  {
+    "name": "Great Value Rice",
+    "item": "rice",
+    "brand": "great value",
+    "size": "large",
+    "price": 3.8
+  },
+  {
+    "name": "Organic Coffee Beans",
+    "item": "coffee",
+    "brand": "organic",
+    "size": "500g",
+    "price": 9.99
+  },
+  {
+    "name": "Kirkland Coffee",
+    "item": "coffee",
+    "brand": "kirkland",
+    "size": "family size",
+    "price": 12.49
+  },
+  {
+    "name": "Organic Orange Juice 1L",
+    "item": "orange juice",
+    "brand": "organic",
+    "size": "1 liter",
+    "price": 5.1
+  },
+  {
+    "name": "Great Value Orange Juice",
+    "item": "orange juice",
+    "brand": "great value",
+    "size": "1 liter",
+    "price": 2.99
+  },
+  {
+    "name": "365 Detergent",
+    "item": "detergent",
+    "brand": "365",
+    "size": "family size",
+    "price": 11.25
+  },
+  {
+    "name": "Lipton Tea 100 bags",
+    "item": "tea",
+    "brand": "lipton",
+    "size": "large",
+    "price": 4.99
+  },
+  {
+    "name": "Maggi Noodles Multipack",
+    "item": "noodles",
+    "brand": "maggi",
+    "size": "multipack",
+    "price": 3.5
+  },
+  {
+    "name": "Britannia Biscuits 200g",
+    "item": "biscuits",
+    "brand": "britannia",
+    "size": "200g",
+    "price": 1.25
+  },
+  {
+    "name": "Amul Cheese 500g",
+    "item": "cheese",
+    "brand": "amul",
+    "size": "500g",
+    "price": 4.2
+  },
+  {
+    "name": "Tesco Bread",
+    "item": "bread",
+    "brand": "tesco",
+    "size": "medium",
+    "price": 1.1
+  },
+  {
+    "name": "Carrefour Olive Oil 1L",
+    "item": "olive oil",
+    "brand": "carrefour",
+    "size": "1 liter",
+    "price": 8.5
+  },
+  {
+    "name": "Kellogg's Cereal",
+    "item": "cereal",
+    "brand": "kellogg's",
+    "size": "family size",
+    "price": 5.25
+  },
+  {
+    "name": "Barilla Pasta 500g",
+    "item": "pasta",
+    "brand": "barilla",
+    "size": "500g",
+    "price": 1.8
+  },
+  {
+    "name": "Cadbury Chocolate 200g",
+    "item": "chocolate",
+    "brand": "cadbury",
+    "size": "200g",
+    "price": 3.1
+  },
+  {
+    "name": "Coca-Cola 2L",
+    "item": "water",
+    "brand": "coca-cola",
+    "size": "2 liter",
+    "price": 2.2
+  },
+  {
+    "name": "Nestle Yogurt",
+    "item": "yogurt",
+    "brand": "nestle",
+    "size": "small",
+    "price": 0.99
+  },
+  {
+    "name": "Organic Lentils 1kg",
+    "item": "lentils",
+    "brand": "organic",
+    "size": "1 kg",
+    "price": 3.6
+  },
+  {
+    "name": "Everest Cumin 100g",
+    "item": "cumin",
+    "brand": "everest",
+    "size": "100g",
+    "price": 1.2
+  },
+  {
+    "name": "MDH Turmeric 250g",
+    "item": "turmeric",
+    "brand": "mdh",
+    "size": "250g",
+    "price": 2.5
+  },
+  {
+    "name": "Tata Salt 1kg",
+    "item": "salt",
+    "brand": "tata",
+    "size": "1kg",
+    "price": 0.5
+  },
+  {
+    "name": "Great Value Black Pepper",
+    "item": "pepper",
+    "brand": "great value",
+    "size": "50g",
+    "price": 3.0
+  },
+  {
+    "name": "Dove Soap Multipack",
+    "item": "soap",
+    "brand": "dove",
+    "size": "multipack",
+    "price": 4.5
+  }
+]

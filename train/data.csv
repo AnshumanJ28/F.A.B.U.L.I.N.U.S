@@ -1,0 +1,401 @@
+text,intent,lang
+find coffee between $4 and $12,SEARCH_FILTER,en
+find me flour,SEARCH_ITEM,en
+throw olive oil on the list,ADD,en
+"we already have olive oil, remove it",REMOVE,en
+tamatar delete karo,REMOVE,hi
+take sugar off the list,REMOVE,en
+sugar under $2,SEARCH_FILTER,en
+yogurt under $3,SEARCH_FILTER,en
+find cheap bread under $15,SEARCH_FILTER,en
+look for organic cheese in small,SEARCH_ITEM,en
+remember to get butter,ADD,en
+quita azucar de mi lista,REMOVE,es
+no olvides el pollo,ADD,es
+delete yogurt,REMOVE,en
+tamatar hatao,REMOVE,hi
+potatoes under $3,SEARCH_FILTER,en
+mujhe ab paneer nahi chahiye,REMOVE,hi
+encuentra 365 pasta por menos de $15,SEARCH_FILTER,es
+muestrame aceite de oliva,SEARCH_ITEM,es
+chicken $2 se kam mein dhundo,SEARCH_FILTER,hi
+add tomatoes to my list,ADD,en
+bananas under $4,SEARCH_FILTER,en
+chawal le aana,ADD,hi
+great value makhan dhundo,SEARCH_ITEM,hi
+necesito comprar tomates,ADD,es
+search cheese between $5 and $8,SEARCH_FILTER,en
+find flour,SEARCH_ITEM,en
+look for organic shampoo in small,SEARCH_ITEM,en
+busca champu por menos de $10,SEARCH_FILTER,es
+delete rice,REMOVE,en
+find great value coffee,SEARCH_ITEM,en
+trader joe's coffee dhundo,SEARCH_ITEM,hi
+search for olive oil,SEARCH_ITEM,en
+"we already have chicken, remove it",REMOVE,en
+palak $15 ke andar,SEARCH_FILTER,hi
+search flour between $10 and $18,SEARCH_FILTER,en
+quiero 2 huevos,ADD,es
+muestrame cebollas por menos de $10,SEARCH_FILTER,es
+where can i find pasta,SEARCH_ITEM,en
+muestrame espinacas por menos de $3,SEARCH_FILTER,es
+add sugar to my list,ADD,en
+paneer add karo,ADD,hi
+put olive oil on the list,ADD,en
+pon huevos en la lista,ADD,es
+2 bottles of seb chahiye,ADD,hi
+necesito comprar pan,ADD,es
+paneer large mein dhundo,SEARCH_ITEM,hi
+i need to buy detergent,ADD,en
+pan por menos de $3,SEARCH_FILTER,es
+tamatar $10 se kam mein dhundo,SEARCH_FILTER,hi
+chawal add karo,ADD,hi
+santre ka juice search karo,SEARCH_ITEM,hi
+i don't need cheese anymore,REMOVE,en
+quiero 2 pollo,ADD,es
+busca trader joe's mantequilla,SEARCH_ITEM,es
+detergent cancel karo,REMOVE,hi
+no olvides el platanos,ADD,es
+scratch tomatoes off the list,REMOVE,en
+search for organic coffee,SEARCH_ITEM,en
+chawal hatao,REMOVE,hi
+add 2 bottles of coffee,ADD,en
+cancel onions,REMOVE,en
+seb search karo,SEARCH_ITEM,hi
+quiero comprar espinacas,ADD,es
+don't forget shampoo,ADD,en
+compra 3 cans of espinacas,ADD,es
+remove spinach from my list,REMOVE,en
+agrega pollo a mi lista,ADD,es
+elimina espinacas,REMOVE,es
+olive oil $15 aur $23 ke beech dhundo,SEARCH_FILTER,hi
+encuentra organic agua por menos de $3,SEARCH_FILTER,es
+list mein ande daalo,ADD,hi
+muestrame aceite de oliva por menos de $4,SEARCH_FILTER,es
+paneer delete karo,REMOVE,hi
+encuentra trader joe's champu por menos de $4,SEARCH_FILTER,es
+mujhe makhan dikhao,SEARCH_ITEM,hi
+take cereal off the list,REMOVE,en
+buy 5 cereal,ADD,en
+busca tomates entre $10 y $18,SEARCH_FILTER,es
+espinacas por menos de $15,SEARCH_FILTER,es
+busca mantequilla por menos de $5,SEARCH_FILTER,es
+roti 1 liter mein dhundo,SEARCH_ITEM,hi
+apples for less than $15,SEARCH_FILTER,en
+ya no necesito tomates,REMOVE,es
+3 palak add karo,ADD,hi
+muestrame papas por menos de $10,SEARCH_FILTER,es
+can you add shampoo,ADD,en
+show olive oil priced under $8,SEARCH_FILTER,en
+"we're out of spinach, add it",ADD,en
+agrega a bag of cafe,ADD,es
+search onions between $2 and $7,SEARCH_FILTER,en
+take cereal off the list,REMOVE,en
+cancel flour,REMOVE,en
+olive oil dhundo,SEARCH_ITEM,hi
+find orange juice,SEARCH_ITEM,en
+delete pasta,REMOVE,en
+cancel tomatoes,REMOVE,en
+remove pasta from my list,REMOVE,en
+add 2 bottles of butter,ADD,en
+aloo add karo,ADD,hi
+encuentra great value platanos por menos de $3,SEARCH_FILTER,es
+find apples under $2,SEARCH_FILTER,en
+arroz por menos de $3,SEARCH_FILTER,es
+find yogurt,SEARCH_ITEM,en
+where can i find shampoo,SEARCH_ITEM,en
+buscame papas,SEARCH_ITEM,es
+quita cebollas de mi lista,REMOVE,es
+mujhe paneer dikhao,SEARCH_ITEM,hi
+find chicken under $10,SEARCH_FILTER,en
+i want to buy tomatoes,ADD,en
+busca papas por menos de $10,SEARCH_FILTER,es
+organic dahi dhundo,SEARCH_ITEM,hi
+add pasta to my list,ADD,en
+no olvides el papas,ADD,es
+find chicken under $15,SEARCH_FILTER,en
+shampoo add karo,ADD,hi
+sasta chawal $8 se kam mein,SEARCH_FILTER,hi
+"ya tenemos cebollas, quitalo",REMOVE,es
+toothpaste $15 se kam mein dhundo,SEARCH_FILTER,hi
+i need to buy apples,ADD,en
+roti $4 ke andar,SEARCH_FILTER,hi
+quiero comprar tomates,ADD,es
+show me detergent under $5,SEARCH_FILTER,en
+i don't need pasta anymore,REMOVE,en
+list mein aloo daalo,ADD,hi
+encuentra great value pollo por menos de $2,SEARCH_FILTER,es
+aloo list se hatao,REMOVE,hi
+mujhe ab ande nahi chahiye,REMOVE,hi
+delete onions,REMOVE,en
+find yogurt,SEARCH_ITEM,en
+can you add toothpaste,ADD,en
+i don't need water anymore,REMOVE,en
+ande list se hatao,REMOVE,hi
+quiero comprar agua,ADD,es
+show me eggs under $10,SEARCH_FILTER,en
+find cheap tomatoes under $8,SEARCH_FILTER,en
+add orange juice to my list,ADD,en
+busca pasta,SEARCH_ITEM,es
+search cheese between $4 and $12,SEARCH_FILTER,en
+remove cereal from my list,REMOVE,en
+list mein doodh daalo,ADD,hi
+sugar for less than $15,SEARCH_FILTER,en
+cancela cebollas,REMOVE,es
+find cheap shampoo under $3,SEARCH_FILTER,en
+find cheese in 500g,SEARCH_ITEM,en
+put cereal on the list,ADD,en
+sasta toothpaste $4 se kam mein,SEARCH_FILTER,hi
+remove butter from my list,REMOVE,en
+donde puedo encontrar queso,SEARCH_ITEM,es
+get rid of potatoes,REMOVE,en
+borra espinacas,REMOVE,es
+i need detergent,ADD,en
+"ya tenemos pollo, quitalo",REMOVE,es
+get 5 coffee,ADD,en
+ande $5 aur $10 ke beech dhundo,SEARCH_FILTER,hi
+busca agua,SEARCH_ITEM,es
+where can i find cereal,SEARCH_ITEM,en
+quiero 2 espinacas,ADD,es
+coffee delete karo,REMOVE,hi
+mujhe dahi dikhao,SEARCH_ITEM,hi
+"se nos acabo el platanos, agregalo",ADD,es
+mujhe ab santre ka juice nahi chahiye,REMOVE,hi
+busca arroz por menos de $5,SEARCH_FILTER,es
+donde puedo encontrar manzanas,SEARCH_ITEM,es
+find sugar between $4 and $12,SEARCH_FILTER,en
+coffee hatao,REMOVE,hi
+list mein pasta daalo,ADD,hi
+show me detergent under $3,SEARCH_FILTER,en
+muestrame harina por menos de $2,SEARCH_FILTER,es
+can you add milk,ADD,en
+delete tomatoes,REMOVE,en
+scratch yogurt off the list,REMOVE,en
+put spinach on the list,ADD,en
+find me shampoo,SEARCH_ITEM,en
+find cereal under $3,SEARCH_FILTER,en
+busca arroz por menos de $10,SEARCH_FILTER,es
+cancela pan,REMOVE,es
+roti search karo,SEARCH_ITEM,hi
+can you add spinach,ADD,en
+search for 365 cereal,SEARCH_ITEM,en
+search for 365 chicken,SEARCH_ITEM,en
+delete onions,REMOVE,en
+harina por menos de $5,SEARCH_FILTER,es
+find detergent between $2 and $10,SEARCH_FILTER,en
+"we already have orange juice, remove it",REMOVE,en
+buscame pan,SEARCH_ITEM,es
+cereal for less than $2,SEARCH_FILTER,en
+find chicken between $8 and $13,SEARCH_FILTER,en
+show eggs priced under $4,SEARCH_FILTER,en
+don't forget detergent,ADD,en
+mujhe chicken dikhao,SEARCH_ITEM,hi
+encuentra cereal en small,SEARCH_ITEM,es
+add some olive oil,ADD,en
+show me water,SEARCH_ITEM,en
+don't forget rice,ADD,en
+cancela pasta,REMOVE,es
+busca great value cereal,SEARCH_ITEM,es
+cereal add karo,ADD,hi
+show flour priced under $8,SEARCH_FILTER,en
+pyaz list mein add karo,ADD,hi
+cereal $2 se kam mein dhundo,SEARCH_FILTER,hi
+where can i find chicken,SEARCH_ITEM,en
+cancela agua,REMOVE,es
+compra 5 mantequilla,ADD,es
+remove onions,REMOVE,en
+muestrame cereal,SEARCH_ITEM,es
+borra aceite de oliva,REMOVE,es
+find cheap sugar under $10,SEARCH_FILTER,en
+azucar por menos de $15,SEARCH_FILTER,es
+kele list se hatao,REMOVE,hi
+search for trader joe's eggs,SEARCH_ITEM,en
+paneer family size mein dhundo,SEARCH_ITEM,hi
+chicken list mein add karo,ADD,hi
+show me yogurt,SEARCH_ITEM,en
+paneer cancel karo,REMOVE,hi
+aceite de oliva por menos de $15,SEARCH_FILTER,es
+find great value toothpaste,SEARCH_ITEM,en
+muestrame pasta de dientes,SEARCH_ITEM,es
+mujhe coffee chahiye,ADD,hi
+detergent $15 se kam mein dhundo,SEARCH_FILTER,hi
+organic olive oil dhundo,SEARCH_ITEM,hi
+pani hatao,REMOVE,hi
+i want to buy tomatoes,ADD,en
+compra 3 cans of pan,ADD,es
+find cheap bread under $2,SEARCH_FILTER,en
+encuentra espinacas en family size,SEARCH_ITEM,es
+puedes agregar pasta de dientes,ADD,es
+olive oil $10 ke andar,SEARCH_FILTER,hi
+search for butter,SEARCH_ITEM,en
+cancela azucar,REMOVE,es
+great value olive oil dhundo,SEARCH_ITEM,hi
+don't forget flour,ADD,en
+encuentra pan en family size,SEARCH_ITEM,es
+where can i find chicken,SEARCH_ITEM,en
+donde puedo encontrar pasta,SEARCH_ITEM,es
+find milk in large,SEARCH_ITEM,en
+find sugar between $3 and $11,SEARCH_FILTER,en
+look up potatoes,SEARCH_ITEM,en
+busca 365 detergente,SEARCH_ITEM,es
+makhan $8 se kam mein dhundo,SEARCH_FILTER,hi
+olive oil $10 ke andar,SEARCH_FILTER,hi
+donde puedo encontrar mantequilla,SEARCH_ITEM,es
+agrega 3 queso,ADD,es
+remove rice,REMOVE,en
+"we already have sugar, remove it",REMOVE,en
+busca organic azucar,SEARCH_ITEM,es
+coffee dhundo,SEARCH_ITEM,hi
+saca harina de la lista,REMOVE,es
+"ya tenemos jugo de naranja, quitalo",REMOVE,es
+show me orange juice,SEARCH_ITEM,en
+add spinach,ADD,en
+get rid of olive oil,REMOVE,en
+coffee $8 aur $11 ke beech dhundo,SEARCH_FILTER,hi
+delete apples,REMOVE,en
+search for kirkland detergent,SEARCH_ITEM,en
+throw yogurt on the list,ADD,en
+ya no necesito mantequilla,REMOVE,es
+scratch water off the list,REMOVE,en
+no olvides el manzanas,ADD,es
+trader joe's atta dhundo,SEARCH_ITEM,hi
+palak search karo,SEARCH_ITEM,hi
+sasta chicken $2 se kam mein,SEARCH_FILTER,hi
+encuentra 365 mantequilla por menos de $10,SEARCH_FILTER,es
+makhan cancel karo,REMOVE,hi
+cancela pollo,REMOVE,es
+makhan $2 aur $10 ke beech dhundo,SEARCH_FILTER,hi
+sasta cheeni $10 se kam mein,SEARCH_FILTER,hi
+look up bread,SEARCH_ITEM,en
+borra harina,REMOVE,es
+cheese under $4,SEARCH_FILTER,en
+find shampoo between $10 and $15,SEARCH_FILTER,en
+seb $4 aur $12 ke beech dhundo,SEARCH_FILTER,hi
+seb add karo,ADD,hi
+cheeni mat bhoolna,ADD,hi
+find pasta between $5 and $8,SEARCH_FILTER,en
+puedes agregar cebollas,ADD,es
+look for trader joe's rice in family size,SEARCH_ITEM,en
+necesito comprar cafe,ADD,es
+buy 2 shampoo,ADD,en
+take bananas off the list,REMOVE,en
+remove coffee,REMOVE,en
+muestrame pasta por menos de $10,SEARCH_FILTER,es
+roti cancel karo,REMOVE,hi
+ya no necesito yogur,REMOVE,es
+find onions between $5 and $13,SEARCH_FILTER,en
+throw flour on the list,ADD,en
+can you add coffee,ADD,en
+find 365 bread under $4,SEARCH_FILTER,en
+cancel butter,REMOVE,en
+agrega harina a mi lista,ADD,es
+elimina huevos,REMOVE,es
+muestrame pan,SEARCH_ITEM,es
+find me orange juice,SEARCH_ITEM,en
+orange juice for less than $10,SEARCH_FILTER,en
+encuentra kirkland agua por menos de $2,SEARCH_FILTER,es
+remove toothpaste,REMOVE,en
+get 3 cans of potatoes,ADD,en
+look up pasta,SEARCH_ITEM,en
+cheeni search karo,SEARCH_ITEM,hi
+find detergent,SEARCH_ITEM,en
+busca kirkland pollo,SEARCH_ITEM,es
+pyaz $8 ke andar,SEARCH_FILTER,hi
+doodh $2 ke andar,SEARCH_FILTER,hi
+"we're out of rice, add it",ADD,en
+elimina agua,REMOVE,es
+chawal list mein add karo,ADD,hi
+find onions,SEARCH_ITEM,en
+encuentra arroz,SEARCH_ITEM,es
+search for organic sugar,SEARCH_ITEM,en
+cancel water,REMOVE,en
+no olvides el leche,ADD,es
+get rid of pasta,REMOVE,en
+look for kirkland yogurt in 1 liter,SEARCH_ITEM,en
+mujhe ab atta nahi chahiye,REMOVE,hi
+quita mantequilla de mi lista,REMOVE,es
+find detergent in 1 liter,SEARCH_ITEM,en
+pasta delete karo,REMOVE,hi
+take pasta off the list,REMOVE,en
+quiero comprar arroz,ADD,es
+search for kirkland shampoo,SEARCH_ITEM,en
+find me coffee,SEARCH_ITEM,en
+ya no necesito arroz,REMOVE,es
+shampoo under $5,SEARCH_FILTER,en
+remove potatoes,REMOVE,en
+find me pasta,SEARCH_ITEM,en
+quita pasta de dientes de mi lista,REMOVE,es
+scratch sugar off the list,REMOVE,en
+pani add karo,ADD,hi
+encuentra organic pollo por menos de $3,SEARCH_FILTER,es
+ande list se hatao,REMOVE,hi
+quita mantequilla de mi lista,REMOVE,es
+sasta seb $2 se kam mein,SEARCH_FILTER,hi
+i need to buy potatoes,ADD,en
+sasta pyaz $4 se kam mein,SEARCH_FILTER,hi
+mujhe roti chahiye,ADD,hi
+busca trader joe's pan,SEARCH_ITEM,es
+borra platanos,REMOVE,es
+2 bottles of seb add karo,ADD,hi
+i want 3 cans of sugar,ADD,en
+busca pasta de dientes,SEARCH_ITEM,es
+i don't need chicken anymore,REMOVE,en
+puedes agregar cebollas,ADD,es
+mujhe ab detergent nahi chahiye,REMOVE,hi
+encuentra jugo de naranja,SEARCH_ITEM,es
+remember to get toothpaste,ADD,en
+busca trader joe's queso,SEARCH_ITEM,es
+doodh search karo,SEARCH_ITEM,hi
+mujhe chawal chahiye,ADD,hi
+ya no necesito manzanas,REMOVE,es
+take bread off the list,REMOVE,en
+chawal cancel karo,REMOVE,hi
+ande $4 aur $9 ke beech dhundo,SEARCH_FILTER,hi
+chawal list se hatao,REMOVE,hi
+find bananas between $15 and $23,SEARCH_FILTER,en
+muestrame agua por menos de $10,SEARCH_FILTER,es
+i need cereal,ADD,en
+find cheap coffee under $15,SEARCH_FILTER,en
+find shampoo in 1 liter,SEARCH_ITEM,en
+mujhe pyaz dikhao,SEARCH_ITEM,hi
+find orange juice in 500g,SEARCH_ITEM,en
+don't forget tomatoes,ADD,en
+roti dhundo,SEARCH_ITEM,hi
+ya no necesito huevos,REMOVE,es
+"we already have cereal, remove it",REMOVE,en
+show potatoes priced under $5,SEARCH_FILTER,en
+delete shampoo,REMOVE,en
+find shampoo between $2 and $7,SEARCH_FILTER,en
+coffee for less than $2,SEARCH_FILTER,en
+list mein palak daalo,ADD,hi
+find me milk,SEARCH_ITEM,en
+remember to get milk,ADD,en
+donde puedo encontrar cereal,SEARCH_ITEM,es
+atta 500g mein dhundo,SEARCH_ITEM,hi
+show chicken priced under $8,SEARCH_FILTER,en
+dahi mat bhoolna,ADD,hi
+pon tomates en la lista,ADD,es
+delete sugar,REMOVE,en
+i need cheese,ADD,en
+no olvides el pasta,ADD,es
+buscame pan,SEARCH_ITEM,es
+ya no necesito yogur,REMOVE,es
+add eggs,ADD,en
+look for organic detergent in family size,SEARCH_ITEM,en
+find trader joe's cheese under $5,SEARCH_FILTER,en
+muestrame queso por menos de $3,SEARCH_FILTER,es
+list mein pasta daalo,ADD,hi
+busca huevos,SEARCH_ITEM,es
+sasta cereal $15 se kam mein,SEARCH_FILTER,hi
+elimina queso,REMOVE,es
+search for kirkland cheese,SEARCH_ITEM,en
+atta delete karo,REMOVE,hi
+pasta dhundo,SEARCH_ITEM,hi
+puedes agregar yogur,ADD,es
+encuentra 365 manzanas por menos de $5,SEARCH_FILTER,es
+can you add eggs,ADD,en
+i need to buy yogurt,ADD,en
+papas por menos de $4,SEARCH_FILTER,es
+shampoo hatao,REMOVE,hi
+buscame pasta de dientes,SEARCH_ITEM,es
+encuentra leche,SEARCH_ITEM,es
