@@ -1,6 +1,6 @@
 <div align="center">
   <h1>F.A.B.U.L.I.N.U.S.</h1>
-  <p><strong>Fast Assistant, Built Using Logistic Inference — Native Understanding & Speech</strong></p>
+  <h3>Fast Assistant, Built Using Logistic Inference — Native Understanding & Speech</h3>
 
   [![Live Demo](https://img.shields.io/badge/Live_Demo-Play_Now!-success?style=for-the-badge)](https://fabulinus.onrender.com/)
   <br/>
