@@ -1,14 +1,35 @@
-# F.A.B.U.L.I.N.U.S.
+<div align="center">
+  <h1>🎙️ F.A.B.U.L.I.N.U.S.</h1>
+  <p><strong>Fast Assistant, Built Using Logistic Inference — Native Understanding & Speech</strong></p>
 
-**F.A.B.U.L.I.N.U.S.** (Fast Assistant, Built Using Logistic Inference — Native Understanding & Speech) is a voice-based shopping list manager with smart suggestions. Speak (or type)
-commands like "add 2 bottles of water" or "find toothpaste under $5" and the
-app updates your list, runs a search, and keeps a suggestions panel fresh
-based on your purchase history, the season, and substitute items.
+  [![C++](https://img.shields.io/badge/C++-17-blue.svg?style=for-the-badge&logo=c%2B%2B)](https://isocpp.org/)
+  [![ONNX](https://img.shields.io/badge/ONNX-Runtime-orange.svg?style=for-the-badge)](https://onnxruntime.ai/)
+  [![Vanilla JS](https://img.shields.io/badge/JavaScript-Vanilla-yellow.svg?style=for-the-badge&logo=javascript)]()
+</div>
 
-Dark "Jarvis HUD" UI: a glowing amber orb is the primary voice control, with
-idle / listening / processing animation states.
+---
 
-## Architecture
+## ⚡ Overview
+
+**F.A.B.U.L.I.N.U.S.** is a blazingly fast, voice-activated shopping list manager with an intelligent suggestion engine. It utilizes a **custom-trained Natural Language Processing (NLP) model** running entirely inside a native C++ backend via ONNX Runtime. 
+
+**No cloud LLMs. No heavy Python runtimes.** Just pure, highly-optimized deterministic rules and lightning-fast inference in a single executable.
+
+Simply speak commands like *"add 500 grams of potatoes"* or *"remove two eggs"*, and the application will instantly process the language, perform the mathematical metric conversions, and recalculate smart suggestions based on your purchase history and seasonal trends!
+
+---
+
+## ✨ Features
+
+- **🎙️ Voice-First "Jarvis HUD" UI**: A beautiful, dark-themed interface featuring a glowing, animated amber orb that responds to your voice in real-time.
+- **🧠 Native C++ ONNX Inference**: Intent classification happens natively in C++ using a TF-IDF + Logistic Regression model. The entire NLP pipeline lives directly inside the ONNX graph.
+- **🧮 Smart Metric Math**: Seamlessly handles complex metric math. Add `1 kg` of onions, remove `200 grams`, and it perfectly calculates you have `0.8 kg` left. Understands English word numbers (`one`, `two`, `a dozen`).
+- **💡 Contextual Suggestions Engine**: Recommends items dynamically based on your purchase frequency, recent behavior, time of year (seasonality), and known item substitutes.
+- **☁️ Cloud Run Ready**: Ships with a Dockerfile ready to be dropped straight into Google Cloud Run or any containerized environment.
+
+---
+
+## 🏗️ Architecture
 
 ```mermaid
 graph TD
@@ -30,111 +51,49 @@ graph TD
 
 The server logic lives entirely in [`server/main.cpp`](server/main.cpp) and relies on the [ONNX Runtime](https://onnxruntime.ai/) for fast inference. 
 
-**No Python at runtime.** Python ([`train/train.py`](train/train.py)) is used exactly once,
-offline, to produce `server/data/model.onnx`. The shipped server is a
-single C++ binary plus static data files.
+**No Python at runtime.** Python ([`train/train.py`](train/train.py)) is used exactly once, offline, to produce `server/data/model.onnx`. The shipped server is a single C++ binary that runs instantly.
 
-**No LLM anywhere in the pipeline.** Intent classification is a small
-logistic regression model; everything else is deterministic rules and
-dictionary lookups.
+---
 
-## Repo layout
+## 📂 Repository Layout
 
-```
-index.html, css/, js/          frontend source (also mirrored into server/public)
-train/
-  generate_data.py             generates train/data.csv (labeled examples, 3 languages)
-  data.csv                     training data (ADD / REMOVE / SEARCH_ITEM / SEARCH_FILTER)
-  train.py                     trains TF-IDF+LogReg, exports model.onnx (dev-only)
-  model.onnx, vocab.json, labels.json   training outputs (also copied to server/data/)
-server/
-  main.cpp                     the C++ server (cpp-httplib + ONNX Runtime)
-  Makefile                     build script
-  data/                        model.onnx + JSON dictionaries the server reads at startup
-  public/                      static frontend served by the C++ binary
-  third_party/                 vendored cpp-httplib, nlohmann/json, prebuilt ONNX Runtime
-Dockerfile
+```text
+├── index.html, css/, js/   # The frontend source code
+├── server/
+│   ├── main.cpp            # Core C++ Server (cpp-httplib + ONNX Runtime)
+│   ├── Makefile            # Build script
+│   ├── data/               # model.onnx + JSON dictionaries (metrics, items, history)
+│   ├── public/             # Static frontend files served by the C++ binary
+│   └── third_party/        # Vendored cpp-httplib, nlohmann/json, prebuilt ONNX Runtime
+├── train/
+│   ├── generate_data.py    # Generates train/data.csv (labeled examples)
+│   ├── train.py            # Trains TF-IDF+LogReg, exports model.onnx (dev-only)
+│   └── model.onnx          # Output models
+├── .gitignore              # Ignores large binaries (like .pdb) for clean pushes
+└── Dockerfile              # Cloud Run deployment config
 ```
 
-## Running locally
+---
 
-Requires: `g++` (C++17), `make`. No other build tools needed — ONNX Runtime,
-cpp-httplib, and nlohmann/json are vendored under `server/third_party/`.
+## 🚀 Running Locally
+
+You only need `g++` (C++17) and `make`. There are no external dependencies required—ONNX Runtime, cpp-httplib, and nlohmann/json are perfectly vendored right inside the `server/third_party/` directory!
 
 ```bash
 cd server
-make
-LD_LIBRARY_PATH=third_party/onnxruntime/lib ./vsa-server --port 8080
-# open http://localhost:8080
+mingw32-make   # (or 'make' on Linux/Mac)
+.\vsa-server.exe --port 8080
 ```
+Then just open `http://localhost:8080` in Chrome!
 
-`--data-dir` and `--static-dir` flags let you point at different data/frontend
-locations; `PORT` env var overrides `--port` (used by Cloud Run).
+> **Browser support note**: The voice input relies on the Web Speech API which has native support in Google Chrome and Microsoft Edge. It will smoothly fallback to a text box on unsupported browsers.
 
-> Note: ONNX Runtime's tokenizer op requires a locale to be installed. If you
-> see a `Failed to construct locale` error, run:
-> `apt-get install -y locales && locale-gen en_US.UTF-8` and export
-> `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` before starting the server (the
-> Dockerfile already does this).
+---
 
-## API
+## 🌐 API Endpoints
 
 - `POST /parse {text}` → `{intent, item?, quantity?, brand?, size?, category?, price_range?}`
-- `POST /log {type, item, quantity}` → records a history event (best-effort, used by `/suggest`)
+- `POST /log {type, item, quantity}` → records a history event (used by `/suggest`)
 - `GET /suggest?list=item1,item2` → `{suggestions: [{item, reason}]}`
 - `GET /search?item=&brand=&size=&price_min=&price_max=` → `{results: [{name, price, brand, size}]}`
 - `GET /health` → `{status: "ok"}`
-
-## Re-training the intent model (dev-only, not run by the shipped app)
-
-```bash
-pip install scikit-learn skl2onnx onnx pandas --break-system-packages
-python3 train/generate_data.py   # regenerate train/data.csv if you want to edit templates
-python3 train/train.py           # trains + validates + exports train/model.onnx
-cp train/model.onnx train/vocab.json train/labels.json server/data/
-```
-
-## Deploying to Google Cloud Run
-
-```bash
-gcloud auth login
-gcloud config set project YOUR_PROJECT_ID
-
-gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/voice-shopping-assistant
-
-gcloud run deploy voice-shopping-assistant \
-  --image gcr.io/YOUR_PROJECT_ID/voice-shopping-assistant \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --port 8080
-```
-
-Cloud Run injects `PORT`; the server already reads it. Once deployed, the
-frontend calls `/parse`, `/suggest`, etc. on the same origin, so no CORS
-configuration or base-URL change is needed — the deployed URL just works.
-
-## What's stubbed / simplified vs. a production build
-
-- **Search catalog** (`server/data/catalog.json`) and **purchase history
-  seed** (`server/data/history_seed.json`) are small hand-written mock
-  datasets, not a real product database or persisted order history.
-- **History persistence**: `/log` events are kept in memory for the life of
-  the process (reset on restart/redeploy). Swapping in SQLite is a small,
-  contained change to `HistoryStore` in `main.cpp`.
-- **Training data** is template-generated (not organic user utterances), so
-  the reported validation accuracy is optimistic — real-world phrasing will
-  be messier. `train/generate_data.py` is meant to be edited/extended, not
-  treated as final.
-- **Entity dictionaries** (items/brands/sizes/categories/substitutes/seasonal)
-  cover a deliberately small vocabulary (~25 items) to keep the demo fast to
-  build and easy to extend; add entries to the JSON files under
-  `server/data/` (and `train/generate_data.py`'s `ITEMS_*` lists, then
-  retrain) to grow coverage.
-
-## Browser support note
-
-Voice input uses the Web Speech API (`SpeechRecognition` /
-`webkitSpeechRecognition`), which has solid support in Chrome/Edge but is
-unavailable or limited in Firefox and Safari. The app detects this and falls
-back to the text input field automatically.
