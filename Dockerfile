@@ -1,38 +1,15 @@
-# Voice Command Shopping Assistant — single-stage build.
-# The C++ server (cpp-httplib + ONNX Runtime) serves both the API and the
-# static frontend on one port, so the image needs no Python at runtime.
-FROM ubuntu:24.04
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        g++ make ca-certificates locales wget tar && \
-    locale-gen en_US.UTF-8 && \
-    rm -rf /var/lib/apt/lists/*
-
-ENV LANG=en_US.UTF-8
-ENV LC_ALL=en_US.UTF-8
+FROM python:3.9-slim
 
 WORKDIR /app
 
-# Server source + vendored deps
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY server/ /app/server/
 
 WORKDIR /app/server
 
-# Download Linux ONNX Runtime (since the repo only vendors Windows DLLs)
-RUN wget -qO- https://github.com/microsoft/onnxruntime/releases/download/v1.18.0/onnxruntime-linux-x64-1.18.0.tgz | tar xvz && \
-    cp -r onnxruntime-linux-x64-1.18.0/lib/* third_party/onnxruntime/lib/ && \
-    rm -rf onnxruntime-linux-x64-1.18.0
-
-RUN make
-
-# Runtime data: trained model + dictionaries, and the static frontend.
-# (already copied via `server/` above: server/data and server/public)
-
 ENV PORT=8080
 EXPOSE 8080
 
-# Make the vendored onnxruntime shared lib discoverable at runtime.
-ENV LD_LIBRARY_PATH=/app/server/third_party/onnxruntime/lib
-
-CMD ["./vsa-server", "--data-dir", "data", "--static-dir", "public"]
+CMD sh -c "gunicorn --bind 0.0.0.0:$PORT app:app"
