@@ -2,6 +2,9 @@
   <h1>F.A.B.U.L.I.N.U.S.</h1>
   <p><strong>Fast Assistant, Built Using Logistic Inference — Native Understanding & Speech</strong></p>
 
+  [![Live Demo](https://img.shields.io/badge/Live_Demo-Play_Now!-success?style=for-the-badge)](https://fabulinus.onrender.com/)
+  <br/>
+  
   [![C++](https://img.shields.io/badge/C++-17-blue.svg?style=for-the-badge&logo=c%2B%2B)](https://isocpp.org/)
   [![ONNX](https://img.shields.io/badge/ONNX-Runtime-orange.svg?style=for-the-badge)](https://onnxruntime.ai/)
   [![Vanilla JS](https://img.shields.io/badge/JavaScript-Vanilla-yellow.svg?style=for-the-badge&logo=javascript)]()
