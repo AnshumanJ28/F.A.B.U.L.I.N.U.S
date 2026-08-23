@@ -36,6 +36,7 @@
       const data = await res.json();
       
       listCategories.innerHTML = data.list_html;
+      window.currentList = data.list;
       
       data.messages.forEach(msg => {
           showToast(msg.text, msg.type === "error");
