@@ -81,12 +81,12 @@ dict_sizes = load_json("sizes.json")
 unit_restrictions = load_json("unit_restrictions.json")
 
 # ONNX Model
-session = ort.InferenceSession("data/model.onnx")
+model_session = ort.InferenceSession("data/model.onnx")
 
 def classify_intent(text):
     try:
         inputs = {"input": [[text]]}
-        outputs = session.run(None, inputs)
+        outputs = model_session.run(None, inputs)
         label = outputs[0][0]
         return label
     except Exception as e:
