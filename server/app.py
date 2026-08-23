@@ -141,14 +141,26 @@ def extract_quantity(text):
     m = re.search(r"-?\d+", text)
     if m:
         return {"found": True, "value": int(m.group(0))}
+        
+    if re.search(r"(?:minus|negative)\s+half\s+(?:a\s+)?dozen", text):
+        return {"found": True, "value": -6}
+    if re.search(r"(?:minus|negative)\s+dozen", text):
+        return {"found": True, "value": -12}
+
+    words = {"one":1, "a":1, "an":1, "two":2, "three":3, "four":4, "five":5, "six":6, "seven":7, "eight":8, "nine":9, "ten":10}
+    for w, v in words.items():
+        if re.search(r"(?:^|[^a-zA-Z])(?:minus|negative)\s+" + re.escape(w) + r"(?:$|[^a-zA-Z])", text):
+            return {"found": True, "value": -v}
+            
     if "half a dozen" in text or "half dozen" in text:
         return {"found": True, "value": 6}
     if "dozen" in text:
         return {"found": True, "value": 12}
-    words = {"one":1, "a":1, "an":1, "two":2, "three":3, "four":4, "five":5, "six":6, "seven":7, "eight":8, "nine":9, "ten":10}
+        
     for w, v in words.items():
         if re.search(r"(?:^|[^a-zA-Z])" + re.escape(w) + r"(?:$|[^a-zA-Z])", text):
             return {"found": True, "value": v}
+            
     return {"found": False, "value": 1}
 
 def extract_entities(text):
