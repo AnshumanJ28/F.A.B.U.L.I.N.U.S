@@ -5,7 +5,7 @@ FROM ubuntu:24.04
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        g++ make ca-certificates locales && \
+        g++ make ca-certificates locales wget tar && \
     locale-gen en_US.UTF-8 && \
     rm -rf /var/lib/apt/lists/*
 
@@ -14,11 +14,16 @@ ENV LC_ALL=en_US.UTF-8
 
 WORKDIR /app
 
-# Server source + vendored deps (onnxruntime prebuilt libs, header-only
-# cpp-httplib and nlohmann/json — see server/README section on third_party/)
+# Server source + vendored deps
 COPY server/ /app/server/
 
 WORKDIR /app/server
+
+# Download Linux ONNX Runtime (since the repo only vendors Windows DLLs)
+RUN wget -qO- https://github.com/microsoft/onnxruntime/releases/download/v1.18.0/onnxruntime-linux-x64-1.18.0.tgz | tar xvz && \
+    cp -r onnxruntime-linux-x64-1.18.0/lib/* third_party/onnxruntime/lib/ && \
+    rm -rf onnxruntime-linux-x64-1.18.0
+
 RUN make
 
 # Runtime data: trained model + dictionaries, and the static frontend.
