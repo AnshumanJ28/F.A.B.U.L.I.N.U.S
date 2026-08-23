@@ -3,11 +3,12 @@ import re
 import json
 import time
 import threading
-from flask import Flask, request, jsonify, send_from_directory, render_template_string
+import uuid
+from flask import Flask, request, jsonify, send_from_directory, render_template_string, session
 import onnxruntime as ort
 
 app = Flask(__name__, static_folder="public", static_url_path="")
-
+app.secret_key = os.environ.get("SECRET_KEY", os.urandom(24))
 LIST_TEMPLATE = """
 {% if current_list|length == 0 %}
 <p class="empty-hint">Your list is empty. Try saying "add milk".</p>
@@ -105,9 +106,18 @@ if os.path.exists("data/history_seed.json"):
 def log_history(item):
     history.append({"item": item.lower(), "timestamp": time.time()})
 
-# Global List State (replacing JS currentList)
-current_list = []
+# Global List State (replacing single current_list)
+user_lists = {}
 list_lock = threading.Lock()
+
+def get_current_list():
+    uid = session.get("uid")
+    if not uid:
+        uid = str(uuid.uuid4())
+        session["uid"] = uid
+    if uid not in user_lists:
+        user_lists[uid] = []
+    return user_lists[uid]
 
 # Entity Extraction Helpers
 def find_longest_match(text, dictionary):
@@ -131,9 +141,9 @@ def find_array_match(text, arr):
     return best
 
 def extract_quantity(text):
-    m = re.search(r"\b(\d+)", text)
+    m = re.search(r"-?\d+", text)
     if m:
-        return {"found": True, "value": int(m.group(1))}
+        return {"found": True, "value": int(m.group(0))}
     if "half a dozen" in text or "half dozen" in text:
         return {"found": True, "value": 6}
     if "dozen" in text:
@@ -190,16 +200,26 @@ def index():
 def get_state():
     data = request.json or {}
     expanded = data.get("expanded_categories", [])
+    
+    with list_lock:
+        current_list = get_current_list()
+        
     list_html = render_template_string(LIST_TEMPLATE, current_list=current_list, expanded_categories=expanded)
     return jsonify({"list_html": list_html, "list": current_list})
 
 @app.route("/api/clear", methods=["POST"])
 def clear_list():
-    global current_list
     data = request.json or {}
     expanded = data.get("expanded_categories", [])
+    
     with list_lock:
-        current_list = []
+        uid = session.get("uid")
+        if not uid:
+            uid = str(uuid.uuid4())
+            session["uid"] = uid
+        user_lists[uid] = []
+        current_list = user_lists[uid]
+        
     list_html = render_template_string(LIST_TEMPLATE, current_list=current_list, expanded_categories=expanded)
     return jsonify({"list_html": list_html, "list": current_list})
 
@@ -221,20 +241,21 @@ def get_converted_qty(qty, from_unit, to_unit):
 
 @app.route("/api/command", methods=["POST"])
 def process_command():
-    global current_list
     data = request.json or {}
     text = data.get("text", "").lower()
     expanded = data.get("expanded_categories", [])
     
-    parts = [p.strip() for p in re.split(r"\s+and\s+|,\s*", text) if p.strip()]
-    if not parts:
-        list_html = render_template_string(LIST_TEMPLATE, current_list=current_list, expanded_categories=expanded)
-        return jsonify({"list_html": list_html, "list": current_list, "messages": [{"type": "error", "text": "Didn't catch that."}]})
-        
-    messages = []
-    primary_intent = None
-    
     with list_lock:
+        current_list = get_current_list()
+        
+        parts = [p.strip() for p in re.split(r"\s+and\s+|,\s*", text) if p.strip()]
+        if not parts:
+            list_html = render_template_string(LIST_TEMPLATE, current_list=current_list, expanded_categories=expanded)
+            return jsonify({"list_html": list_html, "list": current_list, "messages": [{"type": "error", "text": "Didn't catch that."}]})
+            
+        messages = []
+        primary_intent = None
+        
         for i, part in enumerate(parts):
             intent = classify_intent(part)
             if i == 0:
@@ -254,6 +275,10 @@ def process_command():
             if intent == "ADD":
                 if not e.get("item"):
                     messages.append({"type": "error", "text": "Couldn't tell what to add."})
+                    continue
+                    
+                if e.get("quantity", {}).get("value", 1) <= 0:
+                    messages.append({"type": "error", "text": "Negative quantities are ignored."})
                     continue
                     
                 # Conflict checking
@@ -317,12 +342,17 @@ def process_command():
                             continue
                         
                     qty_to_remove = e["quantity"]["value"]
+                    if qty_to_remove <= 0:
+                        messages.append({"type": "error", "text": "Negative quantities are ignored."})
+                        continue
+                        
                     if item_to_remove.get("quantity", 1) > qty_to_remove:
                         item_to_remove["quantity"] -= qty_to_remove
                         sz_str = f" {e.get('size')}" if e.get("size") and e.get("size") != "" else ""
                         messages.append({"type": "success", "text": f"Removed {qty_to_remove}{sz_str} {e['item']}"})
                     else:
-                        current_list = [x for x in current_list if x["item"] != e["item"]]
+                        user_lists[session.get("uid")] = [x for x in current_list if x["item"] != e["item"]]
+                        current_list = user_lists[session.get("uid")]
                         messages.append({"type": "success", "text": f"Removed {e['item']}"})
                 else:
                     messages.append({"type": "error", "text": f"Couldn't find {e['item']} in the list."})
@@ -354,6 +384,9 @@ def suggest():
         
     scored.sort(key=lambda x: x["score"], reverse=True)
     
+    with list_lock:
+        current_list = get_current_list()
+    
     # Filter out items already in list
     in_list = {x["item"] for x in current_list}
     final_suggestions = [x for x in scored if x["item"] not in in_list][:5]
@@ -363,6 +396,9 @@ def suggest():
 
 @app.route("/api/download", methods=["GET"])
 def download_list():
+    with list_lock:
+        current_list = get_current_list()
+        
     if not current_list:
         return "Shopping List is empty\n", 200, {'Content-Type': 'text/plain'}
         
