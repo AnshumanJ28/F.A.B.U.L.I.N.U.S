@@ -374,3 +374,27 @@ html, body {
   .orb { width: 150px; height: 150px; }
   .orb-core { width: 82px; height: 82px; }
 }
+
+/* ---------- Footer ---------- */
+.app-footer {
+  margin-top: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.app-footer p {
+  margin: 0;
+}
+.app-footer a {
+  color: var(--text-dim);
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+.app-footer a:hover,
+.app-footer a:focus-visible {
+  color: var(--amber-hi);
+}
