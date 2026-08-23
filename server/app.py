@@ -3,12 +3,10 @@ import re
 import json
 import time
 import threading
-import uuid
-from flask import Flask, request, jsonify, send_from_directory, render_template_string, session
+from flask import Flask, request, jsonify, send_from_directory, render_template_string
 import onnxruntime as ort
 
 app = Flask(__name__, static_folder="public", static_url_path="")
-app.secret_key = os.environ.get("SECRET_KEY", os.urandom(24))
 LIST_TEMPLATE = """
 {% if current_list|length == 0 %}
 <p class="empty-hint">Your list is empty. Try saying "add milk".</p>
@@ -111,10 +109,9 @@ user_lists = {}
 list_lock = threading.Lock()
 
 def get_current_list():
-    uid = session.get("uid")
+    uid = request.args.get("sid")
     if not uid:
-        uid = str(uuid.uuid4())
-        session["uid"] = uid
+        uid = "default"
     if uid not in user_lists:
         user_lists[uid] = []
     return user_lists[uid]
@@ -213,10 +210,9 @@ def clear_list():
     expanded = data.get("expanded_categories", [])
     
     with list_lock:
-        uid = session.get("uid")
+        uid = request.args.get("sid")
         if not uid:
-            uid = str(uuid.uuid4())
-            session["uid"] = uid
+            uid = "default"
         user_lists[uid] = []
         current_list = user_lists[uid]
         
@@ -351,8 +347,9 @@ def process_command():
                         sz_str = f" {e.get('size')}" if e.get("size") and e.get("size") != "" else ""
                         messages.append({"type": "success", "text": f"Removed {qty_to_remove}{sz_str} {e['item']}"})
                     else:
-                        user_lists[session.get("uid")] = [x for x in current_list if x["item"] != e["item"]]
-                        current_list = user_lists[session.get("uid")]
+                        uid = request.args.get("sid", "default")
+                        user_lists[uid] = [x for x in current_list if x["item"] != e["item"]]
+                        current_list = user_lists[uid]
                         messages.append({"type": "success", "text": f"Removed {e['item']}"})
                 else:
                     messages.append({"type": "error", "text": f"Couldn't find {e['item']} in the list."})

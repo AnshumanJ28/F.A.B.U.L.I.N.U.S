@@ -2,6 +2,11 @@
   "use strict";
 
   const API_BASE = window.VSA_API_BASE || "";
+  const SID = Math.random().toString(36).substring(2, 15);
+
+  function getUrl(path) {
+    return API_BASE + path + "?sid=" + SID;
+  }
 
   const orb = document.getElementById("orb");
   const orbStatus = document.getElementById("orb-status");
@@ -22,7 +27,7 @@
     if (!text) return;
     setOrbState("processing");
     try {
-      const res = await fetch(API_BASE + "/api/command", {
+      const res = await fetch(getUrl("/api/command"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: text, expanded_categories: expandedCategories }),
@@ -76,7 +81,7 @@
 
   async function refreshState() {
     try {
-      const res = await fetch(API_BASE + "/api/state", {
+      const res = await fetch(getUrl("/api/state"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ expanded_categories: expandedCategories }),
@@ -91,7 +96,7 @@
 
   async function refreshSuggestions() {
     try {
-      const res = await fetch(API_BASE + "/api/suggest");
+      const res = await fetch(getUrl("/api/suggest"));
       const data = await res.json();
       suggestionsList.innerHTML = data.sug_html;
     } catch (e) {
@@ -140,7 +145,7 @@
     textInput.value = "";
     
     if (text.toLowerCase() === "clear list") {
-      fetch(API_BASE + "/api/clear", { 
+      fetch(getUrl("/api/clear"), { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ expanded_categories: expandedCategories })
@@ -165,7 +170,7 @@
         showToast("Your list is empty", true);
         return;
       }
-      window.location.href = API_BASE + "/api/download";
+      window.location.href = getUrl("/api/download");
     });
   }
 
@@ -177,7 +182,7 @@
         return;
       }
       if (confirm("Are you sure you want to clear your entire list?")) {
-        fetch(API_BASE + "/api/clear", { 
+        fetch(getUrl("/api/clear"), { 
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ expanded_categories: expandedCategories })
