@@ -1,0 +1,32 @@
+{
+  "fr": {
+    "Your list is empty. Try saying \"add milk\".": "Votre liste est vide. Essayez de dire \"ajouter du lait\".",
+    "Remove": "Retirer",
+    "Show Less": "Voir moins",
+    "Show More": "Voir plus",
+    "No suggestions yet.": "Aucune suggestion pour le moment.",
+    "Add": "Ajouter",
+    "Shopping List is empty": "La liste de courses est vide",
+    "Frequently bought": "Fréquemment acheté"
+  },
+  "hi": {
+    "Your list is empty. Try saying \"add milk\".": "आपकी सूची खाली है। 'दूध जोड़ें' कहने का प्रयास करें।",
+    "Remove": "हटाएं",
+    "Show Less": "कम दिखाएं",
+    "Show More": "अधिक दिखाएं",
+    "No suggestions yet.": "अभी कोई सुझाव नहीं।",
+    "Add": "जोड़ें",
+    "Shopping List is empty": "खरीदारी सूची खाली है",
+    "Frequently bought": "अक्सर खरीदा जाता है"
+  },
+  "es": {
+    "Your list is empty. Try saying \"add milk\".": "Tu lista está vacía. Intenta decir \"agregar leche\".",
+    "Remove": "Eliminar",
+    "Show Less": "Mostrar menos",
+    "Show More": "Mostrar más",
+    "No suggestions yet.": "Aún no hay sugerencias.",
+    "Add": "Agregar",
+    "Shopping List is empty": "La lista de compras está vacía",
+    "Frequently bought": "Comprado frecuentemente"
+  }
+}

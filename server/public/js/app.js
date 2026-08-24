@@ -97,7 +97,7 @@
 
   async function refreshSuggestions() {
     try {
-      const res = await fetch(getUrl("/api/suggest"));
+      const res = await fetch(getUrl("/api/suggest") + "&lang=" + langSelect.value);
       const data = await res.json();
       suggestionsList.innerHTML = data.sug_html;
     } catch (e) {

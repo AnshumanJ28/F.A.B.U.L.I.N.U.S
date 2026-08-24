@@ -7,22 +7,38 @@ from functools import lru_cache
 from concurrent.futures import ThreadPoolExecutor
 from flask import Flask, request, jsonify, send_from_directory, render_template_string
 import onnxruntime as ort
-from deep_translator import GoogleTranslator
 
 app = Flask(__name__, static_folder="public", static_url_path="")
 
 @lru_cache(maxsize=1024)
+# Load Data
+def load_json(filename):
+    path = os.path.join("data", filename)
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+dict_items = load_json("items.json")
+dict_categories = load_json("categories.json")
+dict_brands = load_json("brands.json")
+dict_sizes = load_json("sizes.json")
+unit_restrictions = load_json("unit_restrictions.json")
+local_translations = load_json("local_translations.json")
+
 def cached_translate(text, source_lang, target_lang):
     if not text: return text
-    try:
-        return GoogleTranslator(source=source_lang, target=target_lang).translate(text)
-    except Exception as e:
-        print(f"Translation failed for '{text}': {e}")
-        return text
+    
+    # Check local UI dictionary first
+    if target_lang in local_translations and "outputs" in local_translations[target_lang]:
+        if text in local_translations[target_lang]["outputs"]:
+            return local_translations[target_lang]["outputs"][text]
+            
+    return text
 
 LIST_TEMPLATE = """
 {% if current_list|length == 0 %}
-<p class="empty-hint">Your list is empty. Try saying "add milk".</p>
+<p class="empty-hint">{{ t('Your list is empty. Try saying "add milk".', 'en', lang) }}</p>
 {% else %}
   {% set by_category = {} %}
   {% for entry in current_list %}
@@ -48,11 +64,11 @@ LIST_TEMPLATE = """
               <span class="item-qty">×{{ entry.get('quantity', 1) }}{% if is_unit %} {{ entry.get('size') }}{% endif %}</span>
             {% endif %}
           </span>
-          <button class="item-remove" onclick="sendCommand('remove {{ entry.item }}')">Remove</button>
+          <button class="item-remove" onclick="sendCommand('remove {{ entry.item }}')">{{ t('Remove', 'en', lang) }}</button>
         </div>
       {% endfor %}
       {% if group_items|length > 5 %}
-        <button class="item-toggle" onclick="toggleCategory('{{ cat }}')" title="{{ 'Show Less' if is_expanded else 'Show More' }}">
+        <button class="item-toggle" onclick="toggleCategory('{{ cat }}')" title="{{ t('Show Less', 'en', lang) if is_expanded else t('Show More', 'en', lang) }}">
           {{ '&#x25B2;'|safe if is_expanded else '&#x25BC;'|safe }}
         </button>
       {% endif %}
@@ -63,7 +79,7 @@ LIST_TEMPLATE = """
 
 SUGGESTIONS_TEMPLATE = """
 {% if not suggestions %}
-<li class="empty-hint">No suggestions yet.</li>
+<li class="empty-hint">{{ t('No suggestions yet.', 'en', lang) }}</li>
 {% else %}
   {% for s in suggestions %}
     <li class="suggestion-item">
@@ -71,30 +87,26 @@ SUGGESTIONS_TEMPLATE = """
         <div>{{ s.item }}</div>
         <div class="reason">{{ s.reason }}</div>
       </span>
-      <button class="suggestion-add" onclick="sendCommand('add {{ s.item }}')">Add</button>
+      <button class="suggestion-add" onclick="sendCommand('add {{ s.item }}')">{{ t('Add', 'en', lang) }}</button>
     </li>
   {% endfor %}
 {% endif %}
 """
 
-# Load Data
-def load_json(filename):
-    path = os.path.join("data", filename)
-    if os.path.exists(path):
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
-
-dict_items = load_json("items.json")
-dict_categories = load_json("categories.json")
-dict_brands = load_json("brands.json")
-dict_sizes = load_json("sizes.json")
-unit_restrictions = load_json("unit_restrictions.json")
+# Dictionaries already loaded at the top
 
 # ONNX Model
 model_session = ort.InferenceSession("data/model.onnx")
 
 def classify_intent(text):
+    text_lower = text.lower()
+    words = text_lower.split()
+    with open("debug.txt", "a") as f: f.write(f"classify_intent got text: '{text}' -> words: {words}\n")
+    if "remove" in words:
+        return "REMOVE"
+    if "add" in words:
+        return "ADD"
+        
     try:
         inputs = {"input": [[text]]}
         outputs = model_session.run(None, inputs)
@@ -258,7 +270,7 @@ def get_state():
         except Exception:
             pass
         
-    list_html = render_template_string(LIST_TEMPLATE, current_list=render_list, expanded_categories=expanded)
+    list_html = render_template_string(LIST_TEMPLATE, current_list=render_list, expanded_categories=expanded, t=cached_translate, lang=short_lang)
     return jsonify({"list_html": list_html, "list": render_list})
 
 @app.route("/api/clear", methods=["POST"])
@@ -278,7 +290,7 @@ def clear_list():
     # No need to translate an empty list, but we use render_list for consistency
     render_list = current_list
         
-    list_html = render_template_string(LIST_TEMPLATE, current_list=render_list, expanded_categories=expanded)
+    list_html = render_template_string(LIST_TEMPLATE, current_list=render_list, expanded_categories=expanded, t=cached_translate, lang=short_lang)
     return jsonify({"list_html": list_html, "list": render_list})
 
 def get_converted_qty(qty, from_unit, to_unit):
@@ -297,6 +309,37 @@ def get_converted_qty(qty, from_unit, to_unit):
         return res
     return None
 
+def auto_scale_unit(item):
+    if "quantity" in item and "size" in item:
+        qty = item["quantity"]
+        sz = item["size"]
+        
+        # Upscale
+        if sz == "g" and qty >= 1000:
+            qty = qty / 1000
+            item["size"] = "kg"
+        elif sz == "ml" and qty >= 1000:
+            qty = qty / 1000
+            item["size"] = "l"
+        elif sz == "mg" and qty >= 1000:
+            qty = qty / 1000
+            item["size"] = "g"
+            
+        # Downscale
+        elif sz == "kg" and qty < 1 and qty > 0:
+            qty = qty * 1000
+            item["size"] = "g"
+        elif sz == "l" and qty < 1 and qty > 0:
+            qty = qty * 1000
+            item["size"] = "ml"
+            
+        if qty != item["quantity"]:
+            qty = round(qty, 3)
+            if qty == int(qty):
+                qty = int(qty)
+            item["quantity"] = qty
+
+
 @app.route("/api/command", methods=["POST"])
 def process_command():
     data = request.json or {}
@@ -304,12 +347,33 @@ def process_command():
     short_lang = lang.split('-')[0]
     raw_text = data.get("text", "")
     
-    if short_lang != "en" and raw_text:
-        text = cached_translate(raw_text, short_lang, 'en').lower()
+    if short_lang != "en" and raw_text and short_lang in local_translations:
+        import string
+        foreign_punct = string.punctuation + "।"
+        words = raw_text.split()
+        translated_words = []
+        for w in words:
+            clean_w = w.strip(foreign_punct).lower()
+            if clean_w in local_translations[short_lang]["inputs"]:
+                translated_words.append(local_translations[short_lang]["inputs"][clean_w])
+            else:
+                translated_words.append(w.lower())
+        text = " ".join(translated_words)
     else:
         text = raw_text.lower()
         
     expanded = data.get("expanded_categories", [])
+    
+    clean_command = text.strip(" .!,")
+    if clean_command in ["clear", "clear list", "clear liste", "clear lista", "empty", "empty list"]:
+        with list_lock:
+            uid = request.args.get("sid", "default")
+            user_lists[uid] = []
+            current_list = []
+        list_html = render_template_string(LIST_TEMPLATE, current_list=[], expanded_categories=expanded, t=cached_translate, lang=short_lang)
+        msg_text = cached_translate("Shopping List is empty", 'en', short_lang)
+        return jsonify({"list_html": list_html, "list": [], "messages": [{"type": "success", "text": msg_text}]})
+
     
     with list_lock:
         current_list = get_current_list()
@@ -353,11 +417,18 @@ def process_command():
                     if existing["item"] == e["item"]:
                         ex_size = existing.get("size") or ""
                         new_size = e.get("size") or ""
-                        if ex_size != new_size and new_size != "":
-                            converted = get_converted_qty(e["quantity"]["value"], new_size, ex_size)
-                            if converted is not None:
-                                e["quantity"]["value"] = converted
-                                e["size"] = ex_size
+                        if ex_size != new_size:
+                            converted_new_to_ex = get_converted_qty(e["quantity"]["value"], new_size, ex_size)
+                            converted_ex_to_new = get_converted_qty(existing.get("quantity", 1), ex_size, new_size)
+                            
+                            if converted_new_to_ex is not None:
+                                if (ex_size in ["kg", "l"] and new_size in ["g", "ml"]):
+                                    existing["quantity"] = converted_ex_to_new
+                                    existing["size"] = new_size
+                                    ex_size = new_size
+                                else:
+                                    e["quantity"]["value"] = converted_new_to_ex
+                                    e["size"] = ex_size
                             else:
                                 messages.append({"type": "error", "text": f"Conflict: {e['item']} exists with different unit."})
                                 conflict = True
@@ -374,8 +445,19 @@ def process_command():
                         if new_qty > 10000:
                             new_qty = 10000
                             messages.append({"type": "error", "text": f"Limit reached: Cannot add more {e['item']} (max 10000)."})
+                        
+                        new_qty = round(new_qty, 3)
+                        if new_qty == int(new_qty):
+                            new_qty = int(new_qty)
+                        
                         existing["quantity"] = new_qty
-                        e["quantity"]["value"] = new_qty - old_qty # Actual added amount
+                        
+                        actual_added = round(new_qty - old_qty, 3)
+                        if actual_added == int(actual_added):
+                            actual_added = int(actual_added)
+                        e["quantity"]["value"] = actual_added
+                        
+                        auto_scale_unit(existing)
                         found = True
                         break
                 if not found:
@@ -386,10 +468,13 @@ def process_command():
                     new_item = {"item": e["item"], "category": e.get("category", "Other"), "quantity": qty}
                     if e.get("size"):
                         new_item["size"] = e["size"]
+                    
+                    auto_scale_unit(new_item)
                     current_list.append(new_item)
                     
                 log_history(e["item"])
-                qty_str = f" ×{e['quantity']['value']}" if e['quantity']['value'] > 1 else ""
+                qty_val = e['quantity']['value']
+                qty_str = f" ×{qty_val}" if qty_val != 1 and qty_val > 0 else ""
                 sz_str = f" ({e['size']})" if e.get("size") else ""
                 messages.append({"type": "success", "text": f"Added {e['item']}{sz_str}{qty_str}"})
                 
@@ -408,11 +493,18 @@ def process_command():
                     ex_size = item_to_remove.get("size") or ""
                     new_size = e.get("size") or ""
                     
-                    if ex_size != new_size and new_size != "":
-                        converted = get_converted_qty(e["quantity"]["value"], new_size, ex_size)
-                        if converted is not None:
-                            e["quantity"]["value"] = converted
-                            e["size"] = ex_size
+                    if ex_size != new_size:
+                        converted_new_to_ex = get_converted_qty(e["quantity"]["value"], new_size, ex_size)
+                        converted_ex_to_new = get_converted_qty(item_to_remove.get("quantity", 1), ex_size, new_size)
+                        
+                        if converted_new_to_ex is not None:
+                            if (ex_size in ["kg", "l"] and new_size in ["g", "ml"]):
+                                item_to_remove["quantity"] = converted_ex_to_new
+                                item_to_remove["size"] = new_size
+                                ex_size = new_size
+                            else:
+                                e["quantity"]["value"] = converted_new_to_ex
+                                e["size"] = ex_size
                         else:
                             messages.append({"type": "error", "text": f"Conflict: {e['item']} exists with different unit."})
                             continue
@@ -423,7 +515,13 @@ def process_command():
                         continue
                         
                     if item_to_remove.get("quantity", 1) > qty_to_remove:
-                        item_to_remove["quantity"] -= qty_to_remove
+                        new_qty = round(item_to_remove.get("quantity", 1) - qty_to_remove, 3)
+                        if new_qty == int(new_qty):
+                            new_qty = int(new_qty)
+                        item_to_remove["quantity"] = new_qty
+                        
+                        auto_scale_unit(item_to_remove)
+                        
                         sz_str = f" {e.get('size')}" if e.get("size") and e.get("size") != "" else ""
                         messages.append({"type": "success", "text": f"Removed {qty_to_remove}{sz_str} {e['item']}"})
                     else:
@@ -465,11 +563,13 @@ def process_command():
         except Exception:
             pass
 
-    list_html = render_template_string(LIST_TEMPLATE, current_list=render_list, expanded_categories=expanded)
+    list_html = render_template_string(LIST_TEMPLATE, current_list=render_list, expanded_categories=expanded, t=cached_translate, lang=short_lang)
     return jsonify({"list_html": list_html, "list": render_list, "messages": messages})
 
 @app.route("/api/suggest", methods=["GET"])
 def suggest():
+    lang = request.args.get("lang", "en-US")
+    short_lang = lang.split('-')[0]
     freq = {}
     last_seen = {}
     now = time.time()
@@ -494,7 +594,19 @@ def suggest():
     in_list = {x["item"] for x in current_list}
     final_suggestions = [x for x in scored if x["item"] not in in_list][:5]
     
-    sug_html = render_template_string(SUGGESTIONS_TEMPLATE, suggestions=final_suggestions)
+    if short_lang != "en" and final_suggestions:
+        try:
+            def trans_sug(s):
+                translated_s = s.copy()
+                translated_s["item"] = cached_translate(s["item"], 'en', short_lang)
+                translated_s["reason"] = cached_translate(s["reason"], 'en', short_lang)
+                return translated_s
+            with ThreadPoolExecutor(max_workers=5) as executor:
+                final_suggestions = list(executor.map(trans_sug, final_suggestions))
+        except Exception:
+            pass
+    
+    sug_html = render_template_string(SUGGESTIONS_TEMPLATE, suggestions=final_suggestions, t=cached_translate, lang=short_lang)
     return jsonify({"sug_html": sug_html, "suggestions": final_suggestions})
 
 @app.route("/api/download", methods=["GET"])
