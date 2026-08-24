@@ -1,3 +1,4 @@
 flask
 onnxruntime
+deep-translator
 gunicorn

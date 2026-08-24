@@ -3,10 +3,23 @@ import re
 import json
 import time
 import threading
+from functools import lru_cache
+from concurrent.futures import ThreadPoolExecutor
 from flask import Flask, request, jsonify, send_from_directory, render_template_string
 import onnxruntime as ort
+from deep_translator import GoogleTranslator
 
 app = Flask(__name__, static_folder="public", static_url_path="")
+
+@lru_cache(maxsize=1024)
+def cached_translate(text, source_lang, target_lang):
+    if not text: return text
+    try:
+        return GoogleTranslator(source=source_lang, target=target_lang).translate(text)
+    except Exception as e:
+        print(f"Translation failed for '{text}': {e}")
+        return text
+
 LIST_TEMPLATE = """
 {% if current_list|length == 0 %}
 <p class="empty-hint">Your list is empty. Try saying "add milk".</p>
@@ -138,6 +151,21 @@ def find_array_match(text, arr):
     return best
 
 def extract_quantity(text):
+    dozen_match = re.search(r"(-?\d+|minus\s+\w+|negative\s+\w+|\w+)\s+(?:a\s+)?dozen", text)
+    if dozen_match:
+        word = dozen_match.group(1).lower()
+        multiplier = 1
+        m = re.search(r"-?\d+", word)
+        if m:
+            multiplier = int(m.group(0))
+        else:
+            words = {"one":1, "a":1, "an":1, "two":2, "three":3, "four":4, "five":5, "six":6, "seven":7, "eight":8, "nine":9, "ten":10, "half": 0.5}
+            for w, v in words.items():
+                if w in word:
+                    multiplier = -v if "minus" in word or "negative" in word else v
+                    break
+        return {"found": True, "value": int(multiplier * 12)}
+
     m = re.search(r"-?\d+", text)
     if m:
         return {"found": True, "value": int(m.group(0))}
@@ -209,17 +237,36 @@ def index():
 def get_state():
     data = request.json or {}
     expanded = data.get("expanded_categories", [])
+    lang = data.get("lang", "en-US")
+    short_lang = lang.split('-')[0]
     
     with list_lock:
         current_list = get_current_list()
+
+    render_list = current_list
+    if short_lang != "en" and current_list:
+        try:
+            def trans_item(item):
+                translated_item = item.copy()
+                translated_item["item"] = cached_translate(item["item"], 'en', short_lang)
+                if item.get("category"):
+                    translated_item["category"] = cached_translate(item["category"], 'en', short_lang)
+                return translated_item
+            
+            with ThreadPoolExecutor(max_workers=10) as executor:
+                render_list = list(executor.map(trans_item, current_list))
+        except Exception:
+            pass
         
-    list_html = render_template_string(LIST_TEMPLATE, current_list=current_list, expanded_categories=expanded)
-    return jsonify({"list_html": list_html, "list": current_list})
+    list_html = render_template_string(LIST_TEMPLATE, current_list=render_list, expanded_categories=expanded)
+    return jsonify({"list_html": list_html, "list": render_list})
 
 @app.route("/api/clear", methods=["POST"])
 def clear_list():
     data = request.json or {}
     expanded = data.get("expanded_categories", [])
+    lang = data.get("lang", "en-US")
+    short_lang = lang.split('-')[0]
     
     with list_lock:
         uid = request.args.get("sid")
@@ -228,8 +275,11 @@ def clear_list():
         user_lists[uid] = []
         current_list = user_lists[uid]
         
-    list_html = render_template_string(LIST_TEMPLATE, current_list=current_list, expanded_categories=expanded)
-    return jsonify({"list_html": list_html, "list": current_list})
+    # No need to translate an empty list, but we use render_list for consistency
+    render_list = current_list
+        
+    list_html = render_template_string(LIST_TEMPLATE, current_list=render_list, expanded_categories=expanded)
+    return jsonify({"list_html": list_html, "list": render_list})
 
 def get_converted_qty(qty, from_unit, to_unit):
     if from_unit == to_unit:
@@ -250,7 +300,15 @@ def get_converted_qty(qty, from_unit, to_unit):
 @app.route("/api/command", methods=["POST"])
 def process_command():
     data = request.json or {}
-    text = data.get("text", "").lower()
+    lang = data.get("lang", "en-US")
+    short_lang = lang.split('-')[0]
+    raw_text = data.get("text", "")
+    
+    if short_lang != "en" and raw_text:
+        text = cached_translate(raw_text, short_lang, 'en').lower()
+    else:
+        text = raw_text.lower()
+        
     expanded = data.get("expanded_categories", [])
     
     with list_lock:
@@ -307,15 +365,25 @@ def process_command():
                         
                 if conflict: continue
                 
-                # Update or Add
+                # Update or Add with 10000 limit
                 found = False
                 for existing in current_list:
                     if existing["item"] == e["item"]:
-                        existing["quantity"] = existing.get("quantity", 1) + e["quantity"]["value"]
+                        old_qty = existing.get("quantity", 1)
+                        new_qty = old_qty + e["quantity"]["value"]
+                        if new_qty > 10000:
+                            new_qty = 10000
+                            messages.append({"type": "error", "text": f"Limit reached: Cannot add more {e['item']} (max 10000)."})
+                        existing["quantity"] = new_qty
+                        e["quantity"]["value"] = new_qty - old_qty # Actual added amount
                         found = True
                         break
                 if not found:
-                    new_item = {"item": e["item"], "category": e.get("category", "Other"), "quantity": e["quantity"]["value"]}
+                    qty = e["quantity"]["value"]
+                    if qty > 10000:
+                        qty = 10000
+                        messages.append({"type": "error", "text": f"Limit reached: Cannot add more {e['item']} (max 10000)."})
+                    new_item = {"item": e["item"], "category": e.get("category", "Other"), "quantity": qty}
                     if e.get("size"):
                         new_item["size"] = e["size"]
                     current_list.append(new_item)
@@ -371,8 +439,34 @@ def process_command():
             else:
                 messages.append({"type": "error", "text": f"Unrecognized command: '{part}'"})
                 
-    list_html = render_template_string(LIST_TEMPLATE, current_list=current_list, expanded_categories=expanded)
-    return jsonify({"list_html": list_html, "list": current_list, "messages": messages})
+    if short_lang != "en" and messages:
+        try:
+            def trans_msg(m):
+                m["text"] = cached_translate(m["text"], 'en', short_lang)
+                return m
+            with ThreadPoolExecutor(max_workers=10) as executor:
+                messages = list(executor.map(trans_msg, messages))
+        except Exception as e:
+            print(f"Translation to target failed: {e}")
+
+    # Create a translated copy of current_list for rendering if needed
+    render_list = current_list
+    if short_lang != "en" and current_list:
+        try:
+            def trans_item(item):
+                translated_item = item.copy()
+                translated_item["item"] = cached_translate(item["item"], 'en', short_lang)
+                if item.get("category"):
+                    translated_item["category"] = cached_translate(item["category"], 'en', short_lang)
+                return translated_item
+            
+            with ThreadPoolExecutor(max_workers=10) as executor:
+                render_list = list(executor.map(trans_item, current_list))
+        except Exception:
+            pass
+
+    list_html = render_template_string(LIST_TEMPLATE, current_list=render_list, expanded_categories=expanded)
+    return jsonify({"list_html": list_html, "list": render_list, "messages": messages})
 
 @app.route("/api/suggest", methods=["GET"])
 def suggest():
@@ -405,20 +499,27 @@ def suggest():
 
 @app.route("/api/download", methods=["GET"])
 def download_list():
+    lang = request.args.get("lang", "en-US")
+    short_lang = lang.split('-')[0]
+    
     with list_lock:
         current_list = get_current_list()
         
     if not current_list:
-        return "Shopping List is empty\n", 200, {'Content-Type': 'text/plain'}
+        msg = cached_translate("Shopping List is empty", 'en', short_lang) if short_lang != "en" else "Shopping List is empty"
+        return msg + "\n", 200, {'Content-Type': 'text/plain'}
         
     by_category = {}
     for entry in current_list:
         cat = entry.get('category', 'Other')
+        if short_lang != "en":
+            cat = cached_translate(cat, 'en', short_lang)
         if cat not in by_category:
             by_category[cat] = []
         by_category[cat].append(entry)
         
-    content = "Shopping List\n\n"
+    title = cached_translate("Shopping List", 'en', short_lang) if short_lang != "en" else "Shopping List"
+    content = title + "\n\n"
     for cat in sorted(by_category.keys()):
         content += cat.upper() + "\n"
         for entry in by_category[cat]:
@@ -427,6 +528,9 @@ def download_list():
             qty = entry.get('quantity', 1)
             
             item_str = entry['item']
+            if short_lang != "en":
+                item_str = cached_translate(item_str, 'en', short_lang)
+                
             if sz and not is_unit:
                 item_str += f" ({sz})"
                 

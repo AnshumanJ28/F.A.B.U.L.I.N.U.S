@@ -25,9 +25,10 @@ Simply speak commands like *"add 500 grams of potatoes"* or *"remove two eggs"*,
 ## Features
 
 - **Voice-First "Jarvis HUD" UI**: A beautiful, dark-themed interface featuring a glowing, animated amber orb that responds to your voice in real-time.
+- **Global Multi-Language Support**: Talk in Hindi, French, Spanish, or English! The backend uses a highly-optimized concurrent translation layer (with LRU caching) to process non-English commands and serve localized UI lists with zero latency.
 - **Python Server-Side Rendering (SSR)**: The UI logic has been gutted from the frontend. Python handles generating the HTML and injecting it instantly into the ultra-thin client for maximum speed.
 - **Local ONNX Inference**: Intent classification happens natively in Python using a TF-IDF + Logistic Regression model. The entire NLP pipeline lives directly inside the ONNX graph.
-- **Smart Metric Engine**: Seamlessly handles complex metric math. Add `200 g` of potatoes, and then say *"add 1 kg of potatoes"*, and it perfectly recalculates you have `1.2 kg` (auto-converting kg to g!). 
+- **Smart Metric Engine & Quantity Caps**: Seamlessly handles complex metric math. Add `200 g` of potatoes, and then say *"add 1 kg of potatoes"*, and it perfectly recalculates you have `1.2 kg`. You can even use multipliers like *"two dozen eggs"*! (Features a built-in safety cap of 10,000 max quantity per item).
 - **Massive 400+ Item Dictionary**: Pre-configured with over 400 categorized groceries, including Produce, Dairy, Bakery, Pantry, Household, Personal Care, and Dry Fruits.
 - **Contextual Suggestions Engine**: Recommends items dynamically based on your purchase frequency, recent behavior, time of year (seasonality), and known item substitutes.
 

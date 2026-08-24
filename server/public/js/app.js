@@ -30,7 +30,7 @@
       const res = await fetch(getUrl("/api/command"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: text, expanded_categories: expandedCategories }),
+        body: JSON.stringify({ text: text, expanded_categories: expandedCategories, lang: langSelect.value }),
       });
       if (!res.ok) throw new Error("Command failed");
       const data = await res.json();
@@ -85,7 +85,7 @@
       const res = await fetch(getUrl("/api/state"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ expanded_categories: expandedCategories }),
+        body: JSON.stringify({ expanded_categories: expandedCategories, lang: langSelect.value }),
       });
       const data = await res.json();
       listCategories.innerHTML = data.list_html;
@@ -149,7 +149,7 @@
       fetch(getUrl("/api/clear"), { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ expanded_categories: expandedCategories })
+        body: JSON.stringify({ expanded_categories: expandedCategories, lang: langSelect.value })
       })
         .then(r => r.json())
         .then(data => {
@@ -171,7 +171,7 @@
         showToast("Your list is empty", true);
         return;
       }
-      window.location.href = getUrl("/api/download");
+      window.location.href = getUrl("/api/download") + "&lang=" + langSelect.value;
     });
   }
 
@@ -186,7 +186,7 @@
         fetch(getUrl("/api/clear"), { 
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ expanded_categories: expandedCategories })
+          body: JSON.stringify({ expanded_categories: expandedCategories, lang: langSelect.value })
         })
           .then(r => r.json())
           .then(data => {
