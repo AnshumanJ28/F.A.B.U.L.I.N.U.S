@@ -48,6 +48,8 @@ ADD_TEMPLATES_EN = [
     "throw {item} on the list",
     "don't forget {item}",
     "remember to get {item}",
+    "{qty} {item}",
+    "{item}",
 ]
 REMOVE_TEMPLATES_EN = [
     "remove {item} from my list",
@@ -97,6 +99,8 @@ ADD_TEMPLATES_ES = [
     "compra {qty} {item}",
     "quiero {qty} {item}",
     "no olvides el {item}",
+    "{qty} {item}",
+    "{item}",
 ]
 REMOVE_TEMPLATES_ES = [
     "quita {item} de mi lista",
@@ -134,6 +138,8 @@ ADD_TEMPLATES_HI = [
     "{qty} {item} add karo",
     "{qty} {item} chahiye",
     "{item} mat bhoolna",
+    "{qty} {item}",
+    "{item}",
 ]
 REMOVE_TEMPLATES_HI = [
     "{item} list se hatao",

@@ -111,6 +111,15 @@ def classify_intent(text):
         inputs = {"input": [[text]]}
         outputs = model_session.run(None, inputs)
         label = outputs[0][0]
+        
+        search_words = {"find", "search", "look", "where", "show", "cheap", "under", "between", "less"}
+        remove_words = {"remove", "delete", "clear", "take", "off", "cancel", "rid", "scratch", "without", "no"}
+        has_search = any(w in words for w in search_words)
+        has_remove = any(w in words for w in remove_words)
+        
+        if not has_search and not has_remove:
+            return "ADD"
+            
         return label
     except Exception as e:
         print(f"Model error: {e}")
