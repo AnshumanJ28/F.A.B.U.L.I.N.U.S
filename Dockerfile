@@ -1,7 +1,7 @@
-FROM python:3.9-slim
+FROM python:3.9-slim-bookworm
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends locales libgomp1 && \
+    apt-get install -y --no-install-recommends locales libgomp1 libstdc++6 && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     rm -rf /var/lib/apt/lists/*
