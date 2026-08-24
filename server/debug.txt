@@ -1,7 +1,0 @@
-classify_intent got text: '2 kg onions add' -> words: ['2', 'kg', 'onions', 'add']
-classify_intent got text: 'add 200 grams of tomatoes.' -> words: ['add', '200', 'grams', 'of', 'tomatoes.']
-classify_intent got text: 'add one kg of tomatoes.' -> words: ['add', 'one', 'kg', 'of', 'tomatoes.']
-classify_intent got text: '2 kg onions add' -> words: ['2', 'kg', 'onions', 'add']
-classify_intent got text: '1 kg potatoes add' -> words: ['1', 'kg', 'potatoes', 'add']
-classify_intent got text: '1 l milk add' -> words: ['1', 'l', 'milk', 'add']
-classify_intent got text: '2 eggs add' -> words: ['2', 'eggs', 'add']
